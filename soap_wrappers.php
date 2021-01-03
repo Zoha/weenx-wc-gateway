@@ -35,7 +35,7 @@ class Weenx_GiftPay_Soap_Wrapper
             'CallbackURL' => $callback
         );
         $client = $this->connect();
-        $result = $client->PaymentRequest($params)->PaymentRequestResult;
+        $result = $client->GoPayPaymentRequest($params)->PaymentRequestResult;
         return $result;
     }
 
@@ -86,7 +86,20 @@ class Weenx_GoPay_Soap_Wrapper extends Weenx_GiftPay_Soap_Wrapper
             'CallbackURL' => $callback
         );
         $client = $this->connect();
-        $result = $client->PaymentRequest($params)->PaymentRequestResult;
+        $result = $client->GoPayPaymentRequest($params)->GoPayPaymentRequestResult;
         return $result;
+    }
+
+    public function verify($token)
+    {
+        $client = $this->connect();
+        $params = array(
+            'result' => $token,
+            'SenderId' => $this->senderId,
+            'PlainId' => $this->plainId,
+            'EncryptId' => $this->encryptId,
+        );
+
+        return $client->GoPayPaymentVerify($params)->GoPayPaymentVerifyResult;
     }
 }
